@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PVMC Ice Sales — Azalea Festival 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="scripts.js"></script>
+<link rel="icon" type="image/png" href="Images/IMG_2599_2-removebg-preview.png">
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <span class="nav-icon">🧊</span>
+    <div>
+      <div class="nav-title">PVMC Ice Sales</div>
+      <div class="nav-sub">Azalea Festival 2026 · Benefiting ASP</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showPage('order')" id="tab-order">🛒 New Order</button>
+    <button class="tab-btn" onclick="showPage('dash')" id="tab-dash">📋 Dashboard</button>
+  </div>
+</nav>
+
+<!-- ===== ORDER FORM PAGE ===== -->
+<div class="page active" id="page-order">
+  <div class="hero">
+    <div class="hero-flowers">🌸 🧊 🌸</div>
+    <h1>Ice Sales Order</h1>
+    <p>NC Azalea Festival · Pine Valley Methodist Church</p>
+  </div>
+
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <span class="header-icon">📝</span>
+        <h2>New Order Form</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+
+          <div class="section-divider"><span>Caller Info</span></div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>Phone Number <span class="required">*</span></label>
+              <input type="tel" id="phone" placeholder="(910) 555-0000" />
+            </div>
+            <div class="field">
+              <label>Contact Name <span class="required">*</span></label>
+              <input type="text" id="contact-name" placeholder="Person who called in" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Vendor Name <span class="required">*</span></label>
+            <input type="text" id="vendor-name" placeholder="Vendor / booth name" />
+          </div>
+
+          <div class="section-divider"><span>Order Details</span></div>
+
+          <div class="field">
+            <label># of Bags to Deliver <span class="required">*</span></label>
+            <div class="bags-widget">
+              <button type="button" onclick="adjustBags(-1)">−</button>
+              <input type="number" id="bags" value="1" min="1" max="999" oninput="updatePrice()" />
+              <button type="button" onclick="adjustBags(1)">+</button>
+            </div>
+          </div>
+
+          <input type="number" id="price-per-bag" value="10" style="display:none" />
+
+          <div class="price-display" id="price-display">
+            <span>💰 Total</span>
+            <span id="price-total">$10.00</span>
+          </div>
+
+          <div class="section-divider"><span>Order Source</span></div>
+
+          <!-- Azalea Festival Office toggle -->
+          <div class="field">
+            <label>Azalea Festival Office Order?</label>
+            <div class="toggle-group" id="festival-toggle">
+              <button type="button" class="toggle-opt" data-val="yes" onclick="selectToggle('festival-toggle','yes'); onFestivalToggle()">
+                🌸 Yes — Festival Office
+              </button>
+              <button type="button" class="toggle-opt" data-val="no" onclick="selectToggle('festival-toggle','no'); onFestivalToggle()">
+                No
+              </button>
+            </div>
+            <div id="festival-note" class="field-hint" style="display:none">
+              ⚠️ Festival Office orders show the order amount but are <strong>excluded from revenue totals</strong>. They still count toward orders, bags &amp; deliveries.
+            </div>
+          </div>
+
+          <!-- Pay Now / Credit toggle -->
+          <div class="field" id="payment-field" style="display:none">
+            <label>Payment Method <span class="required">*</span></label>
+            <div class="toggle-group" id="payment-toggle">
+              <button type="button" class="toggle-opt" data-val="pay-now" onclick="selectToggle('payment-toggle','pay-now')">
+                💵 Pay Now
+              </button>
+              <button type="button" class="toggle-opt" data-val="credit" onclick="selectToggle('payment-toggle','credit')">
+                📋 Credit
+              </button>
+            </div>
+          </div>
+
+          <div class="section-divider"><span>Staff</span></div>
+
+          <div class="field">
+            <label>Taken By (Volunteer) <span class="required">*</span></label>
+            <input type="text" id="taken-by" placeholder="Your name" />
+          </div>
+
+          <button class="btn-submit" id="submit-btn" onclick="submitOrder()">
+            🧊 Submit Order
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-credit">
+      Fundraising for <a href="https://asphome.org" target="_blank">Appalachia Service Project</a> · 
+      <a href="https://www.pvmc.life" target="_blank">Pine Valley Methodist Church</a> · 
+      <a href="https://ncazaleafestival.org" target="_blank">NC Azalea Festival</a>
+    </div>
+  </main>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div class="page" id="page-dash">
+  <main style="max-width:720px">
+    <div class="dash-header">
+      <div class="dash-title">Order <span>Dashboard</span></div>
+      <span id="sync-indicator" style="font-size:.78rem;font-weight:600;color:var(--mint);opacity:0;transition:opacity .4s"></span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card accent-pink">
+        <div class="stat-value" id="stat-bags">0</div>
+        <div class="stat-label">Bags Ordered</div>
+      </div>
+      <div class="stat-card accent-gold">
+        <div class="stat-value" id="stat-revenue">$0</div>
+        <div class="stat-label">Revenue</div>
+      </div>
+      <div class="stat-card" style="border-color:#D0F0E3">
+        <div class="stat-value" id="stat-paynow" style="color:#065F46">$0</div>
+        <div class="stat-label">💵 Pay Now</div>
+      </div>
+      <div class="stat-card" style="border-color:#DBEAFE">
+        <div class="stat-value" id="stat-credit" style="color:#1E40AF">$0</div>
+        <div class="stat-label">📋 Credited</div>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div style="margin-bottom:1rem;position:relative">
+      <input type="text" id="search-input" placeholder="🔍  Search by vendor, contact, phone…"
+        oninput="renderOrderList()"
+        style="width:100%;padding:.65rem 1rem .65rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:.9rem;background:#fff;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s"
+        onfocus="this.style.borderColor='var(--azalea)';this.style.boxShadow='0 0 0 3px rgba(201,75,140,.12)'"
+        onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
+      />
+    </div>
+
+    <!-- Multi-select filter bar -->
+    <div style="margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+      <span style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Filter:</span>
+      <button class="filter-btn active" data-filter="all"       onclick="toggleFilter('all',this)">All</button>
+      <button class="filter-btn"        data-filter="pending"   onclick="toggleFilter('pending',this)">⏳ Pending</button>
+      <button class="filter-btn"        data-filter="preparing" onclick="toggleFilter('preparing',this)">🔄 Preparing</button>
+      <button class="filter-btn"        data-filter="delivered" onclick="toggleFilter('delivered',this)">✅ Delivered</button>
+      <button class="filter-btn"        data-filter="cancelled" onclick="toggleFilter('cancelled',this)">❌ Cancelled</button>
+    </div>
+    <div style="margin-bottom:1.1rem;font-size:.75rem;color:var(--muted)">Tap once to select only that status · tap again to add/remove from selection</div>
+
+    <div id="orders-list"></div>
+  </main>
+</div>
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="modal-overlay" id="edit-modal" onclick="handleModalOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Edit Order <span id="modal-order-num" style="color:var(--azalea)"></span></div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="edit-phone" placeholder="(910) 555-0000" />
+        </div>
+        <div class="field">
+          <label>Contact Name</label>
+          <input type="text" id="edit-contact-name" placeholder="Person who called in" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Vendor Name</label>
+        <input type="text" id="edit-vendor-name" placeholder="Vendor / booth name" />
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label># of Bags</label>
+          <div class="bags-widget">
+            <button type="button" onclick="adjustEditBags(-1)">−</button>
+            <input type="number" id="edit-bags" value="1" min="1" max="999" oninput="updateEditPrice()" />
+            <button type="button" onclick="adjustEditBags(1)">+</button>
+          </div>
+        </div>
+        <input type="number" id="edit-price-per-bag" value="10" style="display:none" oninput="updateEditPrice()" />
+      </div>
+
+      <div class="price-display">
+        <span>💰 Total</span>
+        <span id="edit-price-total">$3.00</span>
+      </div>
+
+      <div class="field">
+        <label>Azalea Festival Office Order?</label>
+        <div class="toggle-group" id="edit-festival-toggle">
+          <button type="button" class="toggle-opt" data-val="yes" onclick="selectToggle('edit-festival-toggle','yes'); updateEditPrice(); document.getElementById('edit-payment-field').style.display='none'">
+            🌸 Yes — Festival Office
+          </button>
+          <button type="button" class="toggle-opt" data-val="no" onclick="selectToggle('edit-festival-toggle','no'); updateEditPrice(); document.getElementById('edit-payment-field').style.display='block'">
+            No
+          </button>
+        </div>
+      </div>
+
+      <div class="field" id="edit-payment-field" style="display:none">
+        <label>Payment Method</label>
+        <div class="toggle-group" id="edit-payment-toggle">
+          <button type="button" class="toggle-opt" data-val="pay-now" onclick="selectToggle('edit-payment-toggle','pay-now')">
+            💵 Pay Now
+          </button>
+          <button type="button" class="toggle-opt" data-val="credit" onclick="selectToggle('edit-payment-toggle','credit')">
+            📋 Credit
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Taken By (Volunteer)</label>
+        <input type="text" id="edit-taken-by" placeholder="Volunteer name" />
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-delete" onclick="deleteOrder()">🗑 Delete</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEdit()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast">✅ Order submitted!</div>
+</body>
+</html>
