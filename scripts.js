@@ -424,13 +424,3 @@ function formatDateTime(raw) {
     hour: 'numeric', minute: '2-digit', hour12: true
   });
 }
-
-function formatDateTime(raw) {
-  if (!raw) return '';
-  const d = new Date(raw);
-  if (isNaN(d.getTime())) return raw;
-  return d.toLocaleString('en-US', {
-    month: 'numeric', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', hour12: true
-  });
-}
