@@ -15,7 +15,9 @@ async function sheetPost(payload) {
   try {
     await fetch(SHEET_URL, {
       method: 'POST',
-      body: JSON.stringify(payload),
+      mode: 'no-cors',                                          // FIXED: required for Apps Script cross-origin
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // FIXED: must be form-encoded, not JSON
+      body: new URLSearchParams(payload),                       // FIXED: send as form body, read via e.parameter in Apps Script
     });
   } catch (err) {
     console.warn('Sheet sync failed:', err);
