@@ -1,6 +1,6 @@
 // ---- CONFIG ----
 // Paste your Google Apps Script Web App URL here after deploying
-const SHEET_URL = '';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyK06rl7p2XRgroJO2JeoVeavF0voErhtZDcryJs0vvXgYVGfIlby3nwhUMlvlZ1soE/exec';
 
 // ---- STATE ----
 let orders = JSON.parse(localStorage.getItem('pvmc_ice_orders') || '[]');
