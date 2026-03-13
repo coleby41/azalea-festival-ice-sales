@@ -154,11 +154,14 @@ async function loadFromSheet() {
   const indicator = document.getElementById('sync-indicator');
   if (indicator) { indicator.textContent = '🔄 Syncing…'; indicator.style.opacity = '1'; }
   const result = await sheetGet({ action: 'getOrders' });
-  if (result && result.ok && Array.isArray(result.orders) && result.orders.length > 0) {
-    orders = result.orders.map(o => ({ ...o, id: o.id || o.num }));
-    orderCounter = Math.max(...orders.map(o => o.num), orderCounter);
-    save();
-    renderDash();
+  if (result && result.ok && Array.isArray(result.orders)) {
+    // Sheet is the source of truth — even if empty, that's valid
+    if (result.orders.length > 0) {
+      orders = result.orders.map(o => ({ ...o, id: o.id || o.num }));
+      orderCounter = Math.max(...orders.map(o => o.num), orderCounter);
+      save();
+      renderDash();
+    }
     if (indicator) { indicator.textContent = '✅ Synced'; setTimeout(() => { indicator.style.opacity = '0'; }, 2000); }
   } else {
     if (indicator) { indicator.textContent = SHEET_URL ? '⚠️ Sync failed' : ''; indicator.style.opacity = SHEET_URL ? '1' : '0'; setTimeout(() => { indicator.style.opacity = '0'; }, 3000); }
