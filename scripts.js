@@ -1,6 +1,6 @@
 // ---- CONFIG ----
 // Paste your Google Apps Script Web App URL here after deploying
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyK06rl7p2XRgroJO2JeoVeavF0voErhtZDcryJs0vvXgYVGfIlby3nwhUMlvlZ1soE/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzJ5SGPxkeNCPO4AjN-1b_WGxzTjna6cKlZMm2Gq130eaiaYsI5g39tsibE1kCtTGLK/exec';
 
 // ---- STATE ----
 let orders = JSON.parse(localStorage.getItem('pvmc_ice_orders') || '[]');
@@ -10,20 +10,22 @@ let orderCounter = orders.length ? Math.max(...orders.map(o => o.num)) : 0;
 function save() { localStorage.setItem('pvmc_ice_orders', JSON.stringify(orders)); }
 
 // ---- SHEET SYNC ----
+// POST: send JSON body, no-cors so we can't read the response — that's fine, we don't need to
 async function sheetPost(payload) {
   if (!SHEET_URL) return;
   try {
     await fetch(SHEET_URL, {
       method: 'POST',
-      mode: 'no-cors',                                          // FIXED: required for Apps Script cross-origin
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // FIXED: must be form-encoded, not JSON
-      body: new URLSearchParams(payload),                       // FIXED: send as form body, read via e.parameter in Apps Script
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' }, // text/plain avoids preflight, Apps Script still gets the body
+      body: JSON.stringify(payload),
     });
   } catch (err) {
     console.warn('Sheet sync failed:', err);
   }
 }
 
+// GET: fetches orders — Apps Script responds with JSON and allows cross-origin reads on GET
 async function sheetGet(params) {
   if (!SHEET_URL) return null;
   try {
@@ -98,9 +100,9 @@ function submitOrder() {
     vendorName,
     bags,
     pricePerBag: price,
-    total: bags * price,   // always store real amount
-    isFestival,            // true = show amount but exclude from revenue total
-    payment,               // 'pay-now' | 'credit'
+    total: bags * price,
+    isFestival,
+    payment,
     status: 'pending',
     takenBy,
     time: new Date().toISOString()
@@ -116,7 +118,6 @@ function submitOrder() {
   document.getElementById('vendor-name').value = '';
   document.getElementById('bags').value = 1;
   document.getElementById('taken-by').value = '';
-  // Reset toggles to blank
   document.querySelectorAll('#festival-toggle .toggle-opt, #payment-toggle .toggle-opt').forEach(b => b.classList.remove('active'));
   document.getElementById('festival-note').style.display = 'none';
   document.getElementById('payment-field').style.display = 'none';
@@ -154,7 +155,6 @@ async function loadFromSheet() {
   if (indicator) { indicator.textContent = '🔄 Syncing…'; indicator.style.opacity = '1'; }
   const result = await sheetGet({ action: 'getOrders' });
   if (result && result.ok && Array.isArray(result.orders) && result.orders.length > 0) {
-    // Merge sheet data — sheet is source of truth
     orders = result.orders.map(o => ({ ...o, id: o.id || o.num }));
     orderCounter = Math.max(...orders.map(o => o.num), orderCounter);
     save();
@@ -166,12 +166,10 @@ async function loadFromSheet() {
 }
 
 // ---- FILTER (multi-select) ----
-// activeFilters: Set of statuses. Empty set = show all.
-let activeFilters = new Set(); // empty = "All" mode
+let activeFilters = new Set();
 
 function toggleFilter(f, btn) {
   if (f === 'all') {
-    // "All" clears everything and shows all
     activeFilters.clear();
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -179,19 +177,15 @@ function toggleFilter(f, btn) {
     return;
   }
 
-  // Remove "All" highlight when picking a specific status
   const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
 
   if (activeFilters.has(f)) {
-    // Deselect this filter
     activeFilters.delete(f);
     btn.classList.remove('active');
-    // If nothing selected, revert to All
     if (activeFilters.size === 0) {
       allBtn.classList.add('active');
     }
   } else {
-    // First specific selection — switch from All mode
     if (activeFilters.size === 0) allBtn.classList.remove('active');
     activeFilters.add(f);
     btn.classList.add('active');
@@ -246,7 +240,6 @@ function renderOrderList() {
     const payBadge = order.payment === 'credit'
       ? `<span style="background:#DBEAFE;color:#1E40AF;padding:.15rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">📋 Credit</span>`
       : `<span style="background:#D0F0E3;color:#065F46;padding:.15rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">💵 Pay Now</span>`;
-    // Always show real dollar amount; festival orders flagged with strikethrough + note
     const revenueDisplay = order.isFestival
       ? `<span style="font-size:.82rem;font-weight:700;color:var(--muted);text-decoration:line-through">$${order.total.toFixed(2)}</span>
          <span style="font-size:.7rem;color:var(--azalea-dk);font-weight:600">excl. from revenue</span>`
