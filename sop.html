@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ice Sales Order - SOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ICON SPRITES -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-ice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="2" x2="12" y2="22"/>
+    <path d="M7.5 6.5l4.5 5.5-4.5 5.5"/><path d="M16.5 6.5l-4.5 5.5 4.5 5.5"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M5 5l4 4"/><path d="M15 5l-4 4"/>
+    <path d="M5 19l4-4"/><path d="M15 19l-4-4"/>
+  </symbol>
+  <symbol id="ico-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+    <rect x="9" y="3" width="6" height="4" rx="2"/>
+    <line x1="9" y1="12" x2="15" y2="12"/>
+    <line x1="9" y1="16" x2="13" y2="16"/>
+  </symbol>
+  <symbol id="ico-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1" y="3" width="15" height="13" rx="1"/>
+    <path d="M16 8h4l3 4v4h-7V8z"/>
+    <circle cx="5.5" cy="18.5" r="2.5"/>
+    <circle cx="18.5" cy="18.5" r="2.5"/>
+  </symbol>
+  <symbol id="ico-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="5" width="20" height="14" rx="2"/>
+    <line x1="2" y1="10" x2="22" y2="10"/>
+    <line x1="6" y1="15" x2="10" y2="15"/>
+  </symbol>
+  <symbol id="ico-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7" rx="1"/>
+    <rect x="14" y="3" width="7" height="7" rx="1"/>
+    <rect x="3" y="14" width="7" height="7" rx="1"/>
+    <rect x="14" y="14" width="7" height="7" rx="1"/>
+  </symbol>
+  <symbol id="ico-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </symbol>
+  <symbol id="ico-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    <line x1="9" y1="7" x2="15" y2="7"/>
+    <line x1="9" y1="11" x2="15" y2="11"/>
+  </symbol>
+  <symbol id="ico-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </symbol>
+  <symbol id="ico-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+    <line x1="12" y1="9" x2="12" y2="13"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </symbol>
+  <symbol id="ico-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="12"/>
+    <line x1="12" y1="16" x2="12.01" y2="16"/>
+  </symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </symbol>
+  <symbol id="ico-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </symbol>
+  <symbol id="ico-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <symbol id="ico-plus-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="12" y1="18" x2="12" y2="12"/>
+    <line x1="9" y1="15" x2="15" y2="15"/>
+  </symbol>
+</svg>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-brand">
+      <img class="nav-icon" src="Images/IMG_2599_2-removebg-preview.png" alt="PVMC logo" />
+      <div>
+        <div class="nav-title">PVMC Ice Sales</div>
+        <div class="nav-sub">Azalea Festival 2026 · Benefiting ASP</div>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn" onclick="window.location='index.html'">🛒 New Order</button>
+      <button class="tab-btn" onclick="window.location='dashboard.html'">📋 Dashboard</button>
+      <button class="tab-btn active" onclick="window.location='sop.html'">SOP (Standard Operating Procedure)</button>
+    </div>
+  </nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icons">
+    <div class="hero-icon-bubble">
+      <svg width="22" height="22"><use href="#ico-clipboard"/></svg>
+    </div>
+    <div class="hero-icon-bubble lg">
+      <svg width="28" height="28"><use href="#ico-ice"/></svg>
+    </div>
+    <div class="hero-icon-bubble">
+      <svg width="22" height="22"><use href="#ico-truck"/></svg>
+    </div>
+  </div>
+  <h1>Ice Sales Order - SOP</h1>
+  <p>NC Azalea Festival · Pine Valley Methodist Church</p>
+  <p class="dates">April 10, 2026 – April 12, 2026</p>
+</div>
+
+<!-- CONTENT -->
+<main>
+
+  <!-- Intro -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-book"/></svg></div>
+      <h2>Standard Operating Procedures</h2>
+    </div>
+    <div class="card-body">
+      <p style="font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:1rem;">
+        This guide covers everything volunteers need to know about taking, tracking, fulfilling, and managing ice orders during the NC Azalea Festival.
+      </p>
+      <div class="quick-ref">
+        <svg class="callout-icon" width="15" height="15" style="color:var(--azalea)"><use href="#ico-bolt"/></svg>
+        <span><strong>Quick Reference:</strong> Each bag is $10 · Festival Office orders are excluded from revenue · Always mark orders as Delivered once dropped off</span>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <!-- Step 1 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-clipboard"/></svg></div>
+      <h2>1. Taking an Order</h2>
+    </div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Answer the phone or greet the vendor at the booth.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Ask for: Phone number, Contact name, and Vendor/booth name.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Ask how many bags of ice they need (each bag is $10).</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Ask for delivery location / booth number if possible.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Confirm whether this is a Festival Office order (these are excluded from revenue).</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>For non-Festival Office orders, ask if they're paying now (cash) or on credit.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Enter your name as the volunteer who took the order.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Add any special notes (e.g., "needs by noon", "fragile setup area").</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Review the total with the caller, then tap <strong>Submit Order</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+<br>
+
+  <!-- Step 2 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-truck"/></svg></div>
+      <h2>2. Fulfilling an Order</h2>
+    </div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Go to the Dashboard and find the order in the Pending list.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Mark the order as <strong>Out for Delivery</strong> before leaving with the ice.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Load the correct number of bags onto the cart.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Deliver to the correct booth or location listed on the order.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Collect cash payment if the order is marked as "Pay Now."</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Return and mark the order as <strong>Delivered</strong> immediately after drop-off.</li>
+      </ul>
+      <div class="callout warn">
+        <svg class="callout-icon" width="15" height="15"><use href="#ico-warn"/></svg>
+        <span><strong>Important:</strong> Always mark orders as Delivered once dropped off — this keeps the dashboard accurate for all volunteers.</span>
+      </div>
+    </div>
+  </div>
+
+<br>
+  
+<!-- Step 3 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-card"/></svg></div>
+      <h2>3. Handling Payments</h2>
+    </div>
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Order Type</th>
+            <th>Payment</th>
+            <th>Counts Toward Revenue?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Regular Vendor</td>
+            <td>Cash or Credit</td>
+            <td><span class="td-yes"><svg width="13" height="13"><use href="#ico-yes"/></svg> Yes</span></td>
+          </tr>
+          <tr>
+            <td>Festival Office</td>
+            <td>Internal / No charge</td>
+            <td><span class="td-no"><svg width="13" height="13"><use href="#ico-no"/></svg> No</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="section-divider" style="margin-top:1.25rem"><span>Payment Rules</span></div>
+      <ul class="checklist">
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Each bag of ice costs <strong>$10</strong>. Total = bags × $10.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Credit orders are paid later — note this in the system when submitting.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Place all collected cash in the designated cash box at the booth.</li>
+      </ul>
+    </div>
+  </div>
+
+<br>
+
+  <!-- Step 4 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-grid"/></svg></div>
+      <h2>4. Using the Dashboard</h2>
+    </div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>The Dashboard shows all orders grouped by status: Pending, Out for Delivery, Delivered.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Use filters to find orders quickly by name, booth, or payment type.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Tap any order card to view details or update its status.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>Revenue totals at the top reflect delivered, non-Festival-Office orders only.</li>
+        <li><svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>If you need to edit an order, tap Edit and save changes before leaving the screen.</li>
+      </ul>
+      <div class="callout tip">
+        <svg class="callout-icon" width="15" height="15"><use href="#ico-info"/></svg>
+        <span><strong>Tip:</strong> Refresh the Dashboard periodically so you see orders taken by other volunteers at the booth.</span>
+      </div>
+    </div>
+  </div>
+
+<br>
+
+  <!-- Step 5 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><svg width="16" height="16"><use href="#ico-help"/></svg></div>
+      <h2>5. Common Issues &amp; Tips</h2>
+    </div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li>
+          <svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>
+          <span><strong>Wrong bag count delivered?</strong> Edit the order on the Dashboard to reflect the actual quantity and note the discrepancy.</span>
+        </li>
+        <li>
+          <svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>
+          <span><strong>Customer can't be found?</strong> Call the number on the order. If unreachable, return the ice and mark the order as Pending with a note.</span>
+        </li>
+        <li>
+          <svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>
+          <span><strong>Running low on ice?</strong> Alert the booth lead immediately so a resupply can be arranged.</span>
+        </li>
+        <li>
+          <svg class="check-icon" width="17" height="17"><use href="#ico-check"/></svg>
+          <span><strong>App not loading?</strong> Refresh the page. If the issue persists, use the paper order sheet as backup and enter orders once the app is back online.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-credit">
+    PVMC Ice Sales · NC Azalea Festival 2026 · Benefiting ASP
+  </div>
+
+</main>
+</body>
+</html>
