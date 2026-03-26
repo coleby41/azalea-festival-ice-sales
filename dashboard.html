@@ -6,7 +6,6 @@
 <title>Ice Sales Order - Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="scripts" href="scripts.js">
 <link rel="icon" type="image/png" href="Images/IMG_2599_2-removebg-preview.png">
 </head>
 <body>
@@ -157,5 +156,13 @@
 
 <div id="toast"></div>
 <script src="scripts.js"></script>
+
+<script src="scripts.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    renderDash();
+    loadFromSheet();
+  });
+</script>
 </body>
 </html>

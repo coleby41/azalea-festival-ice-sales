@@ -1,43 +1,3 @@
-/**
- * ============================================================
- *  PVMC ICE SALES — Google Apps Script
- *  NC Azalea Festival 2026 · Benefiting Appalachia Service Project
- * ============================================================
- *
- *  HOW TO SET UP (do this once):
- *  ─────────────────────────────
- *  1. Go to sheets.google.com → create a new blank spreadsheet
- *     Name it: "PVMC Ice Sales 2026"
- *
- *  2. Click Extensions → Apps Script
- *
- *  3. Delete ALL existing code in the editor, paste this entire file, then Save (Ctrl+S)
- *
- *  4. Run the setup function FIRST before deploying:
- *     - In the function dropdown (top toolbar), select "setupSheet"
- *     - Click the ▶ Run button
- *     - Accept any permission prompts that appear
- *     - You should see a popup: "Setup complete!"
- *
- *  5. Deploy as a Web App:
- *     - Click Deploy → New deployment
- *     - Click the gear ⚙ icon → choose "Web app"
- *     - Description: PVMC Ice Sales API
- *     - Execute as: Me
- *     - Who has access: Anyone
- *     - Click Deploy → Copy the Web App URL
- *
- *  6. Add the URL to the HTML app:
- *     - Open ice-sales-app.html in a text editor
- *     - Find the line:  const SHEET_URL = '';
- *     - Paste your Web App URL between the quotes and save
- *
- *  IMPORTANT: Every time you change this script you must redeploy:
- *     Deploy → Manage deployments → Edit (pencil icon) → Version: New version → Deploy
- * ============================================================
- */
-
-
 // ── Sheet name ──────────────────────────────────────────────
 const SHEET_NAME = 'Orders';
 
@@ -205,9 +165,10 @@ function getAllOrders() {
 
   return data
     .filter(row => row[C.ORDER_NUM - 1] !== '')
-    .map(row => ({
+     .map(row => ({
       num:         row[C.ORDER_NUM    - 1],
-      time:        row[C.TIMESTAMP    - 1],
+      id:          row[C.ORDER_NUM    - 1],
+      time:        new Date(row[C.TIMESTAMP - 1]).toISOString(),
       phone:       row[C.PHONE        - 1],
       contactName: row[C.CONTACT      - 1],
       vendorName:  row[C.VENDOR       - 1],
@@ -274,7 +235,7 @@ function capitalize(str) {
 }
 
 function formatDate(d) {
-  return Utilities.formatDate(d, Session.getScriptTimeZone(), 'MM/dd/yyyy HH:mm:ss');
+  return Utilities.formatDate(d, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
 }
 
 function respond(obj) {
