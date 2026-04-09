@@ -87,7 +87,7 @@ function submitOrder() {
   const payment     = getToggleVal('payment-toggle') || 'pay-now';
 
   if (!phone || !contactName || !vendorName || bags < 1 || !takenBy) {
-    showToast('⚠️ Please fill in all required fields', '#E8A830', '#1A2744');
+    showToast('⚠️ Please fill in all required fields', '#E8A830', '#000000ff');
     return;
   }
 
@@ -331,7 +331,7 @@ function openEditModal(id) {
   document.getElementById('edit-contact-name').value  = o.contactName || '';
   document.getElementById('edit-vendor-name').value   = o.vendorName || '';
   document.getElementById('edit-bags').value          = o.bags || 1;
-  document.getElementById('edit-price-per-bag').value = o.pricePerBag || 10;
+  document.getElementById('edit-price-per-bag').value = o.pricePerBag || 11;
   document.getElementById('edit-taken-by').value      = o.takenBy || '';
 
   selectToggle('edit-festival-toggle', o.isFestival ? 'yes' : 'no');
